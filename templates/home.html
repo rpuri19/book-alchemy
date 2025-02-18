@@ -5,12 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
   </head>
+
   <body>
+      <h1>Welcome to the Book Library</h1>
 
-    {% for book in books %}
-    <div> <h3>{{ book.title }}</h3>
-    </div>
-    {% endfor %}
+      <h2>List of Books</h2>
 
+      {% if books %}
+          <table>
+              <thead>
+                  <tr>
+                      <th>ISBN</th>
+                      <th>Title</th>
+                      <th>Publication Year</th>
+                      <th>Author</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for book in books %}
+                      <tr>
+                          <td>{{ book.isbn }}</td>
+                          <td>{{ book.title }}</td>
+                          <td>{{ book.publication_year.year }}</td>
+                          <td>{{ book.author.name if book.author else 'Unknown' }}</td>
+                      </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+      {% else %}
+          <p>No books available in the library.</p>
+      {% endif %}
   </body>
+
 </html>

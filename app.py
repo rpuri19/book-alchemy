@@ -21,7 +21,6 @@ DB_PATH = os.path.join(MAIN_FOLDER_PATH, DB_PATH, DB_NAME)
 
 # Use absolute path in the URI
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_PATH}'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
@@ -76,6 +75,16 @@ def add_book():
     # if 'GET'
     authors = Author.query.all()  # Fetch all authors from the database
     return render_template('add_book.html', authors=authors)
+
+
+@app.route('/')
+def home():
+    # Query all books from the Book table
+    books = Book.query.all()
+    authors =Author.query.all()
+    # Pass the books data to the template
+    return render_template('home.html', books=books, authors=authors)
+
 
 """
 with app.app_context():
