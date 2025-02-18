@@ -26,7 +26,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 @app.route('/add_author',  methods=['GET', 'POST'])
-def index():
+def add_author():
     if request.method == 'POST':
         # retrieve form data
         name = request.form['name']
@@ -43,11 +43,39 @@ def index():
         db.session.add(new_author)
         db.session.commit()
 
-        display_message = "Author added successfully"
+        display_message = "Author Added Successfully"
+
         return render_template('add_author.html', display_message=display_message)
 
     # if 'GET'
     return render_template('add_author.html')
+
+
+@app.route('/add_book',  methods=['GET', 'POST'])
+def add_book():
+    if request.method == 'POST':
+        # retrieve form data
+        isbn = request.form['isbn']
+        title = request.form['title']
+        publication_year_str = request.form['publication_year']
+        author_id = request.form['author_id']
+
+        # Assuming publication_year is just a year (e.g., '2000'), we convert it to a date
+        publication_year = datetime.strptime(publication_year_str, '%Y').date()
+
+        # create new Book instance
+        new_book = Book(isbn=isbn, title=title, publication_year=publication_year, author_id=author_id)
+
+        # add new_author to database and commit the session
+        db.session.add(new_book)
+        db.session.commit()
+
+        display_message = "Book Added Successfully"
+        return render_template('add_book.html', display_message=display_message)
+
+    # if 'GET'
+    authors = Author.query.all()  # Fetch all authors from the database
+    return render_template('add_book.html', authors=authors)
 
 """
 with app.app_context():
