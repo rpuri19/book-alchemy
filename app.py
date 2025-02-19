@@ -52,6 +52,7 @@ def add_author():
 
 @app.route('/add_book',  methods=['GET', 'POST'])
 def add_book():
+    authors = Author.query.all()  # Fetch all authors from the database
     if request.method == 'POST':
         # retrieve form data
         isbn = request.form['isbn']
@@ -70,10 +71,9 @@ def add_book():
         db.session.commit()
 
         display_message = "Book Added Successfully"
-        return render_template('add_book.html', display_message=display_message)
+        return render_template('add_book.html', display_message=display_message, authors=authors)
 
     # if 'GET'
-    authors = Author.query.all()  # Fetch all authors from the database
     return render_template('add_book.html', authors=authors)
 
 
