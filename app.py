@@ -79,11 +79,35 @@ def add_book():
 
 @app.route('/')
 def home():
-    # Query all books from the Book table
+    # Query all books from the Book  and authors table
     books = Book.query.all()
     authors =Author.query.all()
     # Pass the books data to the template
     return render_template('home.html', books=books, authors=authors)
+
+
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query')  # Get the search term from the URL query parameters
+
+    books = []
+    authors = []
+    search_query = query
+
+    if query:
+        # Check if the query is an author's name
+        author = Author.query.filter(Author.name.ilike(f'%{query}%')).first()  # Find first author that matches
+
+        if author:
+            # If the author is found, fetch all books written by that author
+            books = Book.query.filter(Book.author_id == author.id).all()
+            authors = [author]  # Only return this author in the authors list
+        else:
+            # If no author is found, search for books by title
+            books = Book.query.filter(Book.title.ilike(f'%{query}%')).all()
+            authors = []  # No authors to show in this case
+
+    return render_template('search_results.html', books=books, authors=authors, search_query=search_query)
 
 
 """

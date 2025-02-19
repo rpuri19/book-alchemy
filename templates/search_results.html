@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <h1>Search Results</h1>
+
+    <!-- Search Form -->
+    <form action="{{ url_for('search') }}" method="GET">
+      <input type="text" name="query" placeholder="Search for books or authors" value="{{ search_query or '' }}">
+      <button type="submit">Search</button>
+    </form>
+
+    <!-- Check if there are authors matching the search query -->
+    {% if authors %}
+      <h3>Authors Matching "{{ search_query }}"</h3>
+      {% for author in authors %}
+        <h4>{{ author.name }}</h4>
+        <ul>
+          {% for book in books %}
+            {% if book.author_id == author.id %}
+              <li>{{ book.title }} (Published: {{ book.publication_year }}) by {{ book.author.name }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Check if there are books matching the search query (in case no authors were found) -->
+    {% if not authors and books %}
+      <h3>Books Matching "{{ search_query }}"</h3>
+      <ul>
+        {% for book in books %}
+          <li>{{ book.title }} (Published: {{ book.publication_year }})</li>
+        {% else %}
+          <li>No books found.</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+  </body>
+</html>

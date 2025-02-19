@@ -10,11 +10,17 @@
 
   <body>
       <h1>Welcome to the Book Library</h1>
-
-      <div>
-          <a href="{{ url_for('add_author') }}">Add Author</a>
-          <a href="{{ url_for('add_book') }}">Add Book</a>
+      <div class="search-container">
+        <form action="/search" method="GET">
+            <input type="text" name="query" placeholder="Search for Book or Author">
+            <button type="submit">Search</button>
+        </form>
       </div>
+      <div>
+          <button onclick="window.location.href='{{ url_for('add_author') }}'">Add Author</button>
+          <button onclick="window.location.href='{{ url_for('add_book') }}'">Add Book</button>
+      </div>
+
 
       <h2>List of Books</h2>
 
