@@ -3,8 +3,6 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash
 from data_models import db, Author, Book
 
-app = Flask(__name__)
-
 # Ensure the 'data' directory exists
 if not os.path.exists('data'):
     os.makedirs('data')
@@ -17,9 +15,10 @@ DB_NAME = "library.sqlite"
 # Get absolute path to the database file
 DB_PATH = os.path.join(MAIN_FOLDER_PATH, DB_PATH, DB_NAME)
 
+app = Flask(__name__)
 # Use absolute path in the URI
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_PATH}'
-
+app.secret_key = 'your_secret_key'  # Required for flashing messages
 db.init_app(app)
 
 @app.route('/add_author',  methods=['GET', 'POST'])
