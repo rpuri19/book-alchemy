@@ -1,8 +1,6 @@
 import os
-from flask import Flask, render_template, request, redirect
 from datetime import datetime
-from flask_sqlalchemy import SQLAlchemy
-
+from flask import Flask, render_template, request, redirect, url_for, flash
 from data_models import db, Author, Book
 
 app = Flask(__name__)
@@ -110,6 +108,24 @@ def search():
     return render_template('search_results.html', books=books, authors=authors, search_query=search_query)
 
 
+@app.route('/book/<int:book_id>/delete', methods=['POST'])
+def delete_book(book_id):
+    # Fetch the book from the database by ID
+    book_to_delete = Book.query.get_or_404(book_id)
+
+    try:
+        # Delete the book from the session
+        db.session.delete(book_to_delete)
+        db.session.commit()
+
+        # Flash a success message
+        flash(f'Book "{book_to_delete.title}" has been successfully deleted.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('An error occurred while trying to delete the book. Please try again.', 'error')
+
+    # Redirect to the homepage (Library)
+    return redirect(url_for('home'))
 """
 with app.app_context():
   db.create_all()
