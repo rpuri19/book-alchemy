@@ -28,10 +28,8 @@
           {% endfor %}
         </ul>
       {% endfor %}
-    {% endif %}
-
     <!-- Check if there are books matching the search query (in case no authors were found) -->
-    {% if not authors and books %}
+    {% elif books %}
       <h3>Books Matching "{{ search_query }}"</h3>
       <ul>
         {% for book in books %}
@@ -40,7 +38,13 @@
           <li>No books found.</li>
         {% endfor %}
       </ul>
+    {% else %}
+    <p>No data found matching "{{ search_query }}".</p>
+
     {% endif %}
+
+
+
 
   </body>
 </html>
