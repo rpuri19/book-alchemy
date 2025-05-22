@@ -22,7 +22,7 @@
     </form>
     {% if display_message %}
         <div>
-            {{ display_message }}
+            {{ display_message | safe }}
         </div>
     {% endif %}
   </body>

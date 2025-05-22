@@ -39,7 +39,7 @@ def add_author():
         db.session.add(new_author)
         db.session.commit()
 
-        display_message = "Author Added Successfully"
+        display_message = 'Author added successfully! <a href="/">Return to home page</a>'
 
         return render_template('add_author.html', display_message=display_message)
 
@@ -67,7 +67,7 @@ def add_book():
         db.session.add(new_book)
         db.session.commit()
 
-        display_message = "Book Added Successfully"
+        display_message = 'Book added successfully! <a href="/">Return to home page</a>'
         return render_template('add_book.html', display_message=display_message, authors=authors)
 
     # if 'GET'
